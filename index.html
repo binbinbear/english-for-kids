@@ -63,6 +63,16 @@
       color: white;
       box-shadow: 0 6px 20px rgba(107,203,119,0.4);
     }
+    .tab-btn.ocean {
+      border-color: #00b4d8;
+      color: #00b4d8;
+      box-shadow: 0 4px 12px rgba(0,180,216,0.2);
+    }
+    .tab-btn.ocean:hover, .tab-btn.ocean.active {
+      background: #00b4d8;
+      color: white;
+      box-shadow: 0 6px 20px rgba(0,180,216,0.4);
+    }
 
     /* Page sections */
     .page { display: none; padding: 20px; }
@@ -275,6 +285,18 @@
     #school .card::before:nth-child(5) { background: #c77dff; }
     #school .card::before:nth-child(6) { background: #ff9f43; }
 
+    /* Ocean page button colors */
+    #ocean .card:nth-child(1) .card-btn { background: linear-gradient(135deg, #ff6b6b, #c77dff); }
+    #ocean .card:nth-child(2) .card-btn { background: linear-gradient(135deg, #00b4d8, #0077b6); }
+    #ocean .card:nth-child(3) .card-btn { background: linear-gradient(135deg, #6bcb77, #00b4d8); }
+    #ocean .card:nth-child(4) .card-btn { background: linear-gradient(135deg, #00b4d8, #ffd93d); }
+    #ocean .card:nth-child(5) .card-btn { background: linear-gradient(135deg, #ff9f43, #ff6b6b); }
+    #ocean .card:nth-child(6) .card-btn { background: linear-gradient(135deg, #4d96ff, #6bcb77); }
+    #ocean .card:nth-child(7) .card-btn { background: linear-gradient(135deg, #6bcb77, #4d96ff); }
+    #ocean .card:nth-child(8) .card-btn { background: linear-gradient(135deg, #c77dff, #ff6b6b); }
+    #ocean .card:nth-child(9) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff9f43); color: #333; }
+    #ocean .card:nth-child(10) .card-btn { background: linear-gradient(135deg, #ff6b6b, #ff9f43); }
+
     .card-btn:hover {
       transform: scale(1.08);
       box-shadow: 0 6px 18px rgba(0,0,0,0.2);
@@ -368,6 +390,7 @@
     <button class="tab-btn active" onclick="switchTab('daily', this)">🌸 日常口语</button>
     <button class="tab-btn vehicles" onclick="switchTab('vehicles', this)">🚗 交通工具</button>
     <button class="tab-btn school" onclick="switchTab('school', this)">🏫 学校</button>
+    <button class="tab-btn ocean" onclick="switchTab('ocean', this)">🐙 海洋生物</button>
   </div>
 
   <div class="container">
@@ -585,7 +608,7 @@
 
         <!-- Bookcase -->
         <div class="card" onclick="speak('Bookcase!', this)">
-          <span class="card-emoji">📖</span>
+          <span class="card-emoji">📚</span>
           <div class="card-title">Bookcase!</div>
           <div class="card-translate">书架</div>
           <button class="card-btn" onclick="event.stopPropagation(); speak('Bookcase!', this.closest('.card'))">
@@ -609,6 +632,124 @@
           <div class="card-title">Bag!</div>
           <div class="card-translate">书包</div>
           <button class="card-btn" onclick="event.stopPropagation(); speak('Bag!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 海洋生物 Page -->
+    <div id="ocean" class="page">
+      <h1>🐙 海洋世界 🐙</h1>
+      <p class="subtitle">✨ 点击卡片，学学海洋生物 ✨</p>
+
+      <div class="stars">
+        <span class="star">🌊</span>
+        <span class="star">🐠</span>
+        <span class="star">🌊</span>
+        <span class="star">🐬</span>
+        <span class="star">🌊</span>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- Octopus -->
+        <div class="card" onclick="speak('Octopus!', this)">
+          <span class="card-emoji">🐙</span>
+          <div class="card-title">Octopus!</div>
+          <div class="card-translate">章鱼</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Octopus!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Tropical Fish -->
+        <div class="card" onclick="speak('Tropical Fish!', this)">
+          <span class="card-emoji">🐠</span>
+          <div class="card-title">Tropical Fish!</div>
+          <div class="card-translate">热带鱼</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Tropical Fish!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Shark -->
+        <div class="card" onclick="speak('Shark!', this)">
+          <span class="card-emoji">🦈</span>
+          <div class="card-title">Shark!</div>
+          <div class="card-translate">鲨鱼</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Shark!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Dolphin -->
+        <div class="card" onclick="speak('Dolphin!', this)">
+          <span class="card-emoji">🐬</span>
+          <div class="card-title">Dolphin!</div>
+          <div class="card-translate">海豚</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Dolphin!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Crab -->
+        <div class="card" onclick="speak('Crab!', this)">
+          <span class="card-emoji">🦀</span>
+          <div class="card-title">Crab!</div>
+          <div class="card-translate">螃蟹</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Crab!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Whale -->
+        <div class="card" onclick="speak('Whale!', this)">
+          <span class="card-emoji">🐳</span>
+          <div class="card-title">Whale!</div>
+          <div class="card-translate">鲸鱼</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Whale!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Turtle -->
+        <div class="card" onclick="speak('Turtle!', this)">
+          <span class="card-emoji">🐢</span>
+          <div class="card-title">Turtle!</div>
+          <div class="card-translate">海龟</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Turtle!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Jellyfish -->
+        <div class="card" onclick="speak('Jellyfish!', this)">
+          <span class="card-emoji">🪼</span>
+          <div class="card-title">Jellyfish!</div>
+          <div class="card-translate">水母</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Jellyfish!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Squid -->
+        <div class="card" onclick="speak('Squid!', this)">
+          <span class="card-emoji">🦑</span>
+          <div class="card-title">Squid!</div>
+          <div class="card-translate">鱿鱼</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Squid!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Starfish -->
+        <div class="card" onclick="speak('Starfish!', this)">
+          <span class="card-emoji">⭐</span>
+          <div class="card-title">Starfish!</div>
+          <div class="card-translate">海星</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Starfish!', this.closest('.card'))">
             <span class="speaker">🔊</span> 听一听
           </button>
         </div>
