@@ -14,6 +14,50 @@
       overflow-x: hidden;
     }
 
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .tab-btn {
+      background: white;
+      border: 3px solid #ff6b6b;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-family: inherit;
+      font-weight: bold;
+      color: #ff6b6b;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(255,107,107,0.2);
+    }
+    .tab-btn:hover, .tab-btn.active {
+      background: #ff6b6b;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+    }
+    .tab-btn.vehicles {
+      border-color: #4d96ff;
+      color: #4d96ff;
+      box-shadow: 0 4px 12px rgba(77,150,255,0.2);
+    }
+    .tab-btn.vehicles:hover, .tab-btn.vehicles.active {
+      background: #4d96ff;
+      color: white;
+      box-shadow: 0 6px 20px rgba(77,150,255,0.4);
+    }
+
+    /* Page sections */
+    .page { display: none; padding: 20px; }
+    .page.active { display: block; }
+
     /* 飘浮的气球背景 */
     .balloon {
       position: fixed;
@@ -52,7 +96,6 @@
       z-index: 1;
       max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
       text-align: center;
     }
 
@@ -107,6 +150,7 @@
     .card:nth-child(3) { animation-delay: 0.3s; }
     .card:nth-child(4) { animation-delay: 0.4s; }
     .card:nth-child(5) { animation-delay: 0.5s; }
+    .card:nth-child(6) { animation-delay: 0.6s; }
 
     @keyframes cardIn {
       from { transform: translateY(40px) scale(0.8); opacity: 0; }
@@ -143,6 +187,7 @@
     .card:nth-child(3)::before { background: #ffd93d; }
     .card:nth-child(4)::before { background: #6bcb77; }
     .card:nth-child(5)::before { background: #c77dff; }
+    .card:nth-child(6)::before { background: #ff9f43; }
 
     .card-emoji {
       font-size: 3.5rem;
@@ -192,6 +237,17 @@
     .card:nth-child(3) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff6b6b); box-shadow: 0 4px 12px rgba(255,217,61,0.4); color: #333; }
     .card:nth-child(4) .card-btn { background: linear-gradient(135deg, #6bcb77, #4d96ff); box-shadow: 0 4px 12px rgba(107,203,119,0.4); }
     .card:nth-child(5) .card-btn { background: linear-gradient(135deg, #c77dff, #ff6b6b); box-shadow: 0 4px 12px rgba(199,125,255,0.4); }
+    .card:nth-child(6) .card-btn { background: linear-gradient(135deg, #ff9f43, #ff6b6b); box-shadow: 0 4px 12px rgba(255,159,67,0.4); }
+
+    /* Vehicle page button colors */
+    #vehicles .card:nth-child(1) .card-btn { background: linear-gradient(135deg, #ff6b6b, #ff9f43); }
+    #vehicles .card:nth-child(2) .card-btn { background: linear-gradient(135deg, #4d96ff, #6bcb77); }
+    #vehicles .card:nth-child(3) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff6b6b); color: #333; }
+    #vehicles .card:nth-child(4) .card-btn { background: linear-gradient(135deg, #ff4757, #ff6b6b); }
+    #vehicles .card:nth-child(5) .card-btn { background: linear-gradient(135deg, #4d96ff, #3742fa); }
+    #vehicles .card:nth-child(6) .card-btn { background: linear-gradient(135deg, #c77dff, #ff6b6b); }
+    #vehicles .card:nth-child(7) .card-btn { background: linear-gradient(135deg, #6bcb77, #4d96ff); }
+    #vehicles .card:nth-child(8) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff9f43); color: #333; }
 
     .card-btn:hover {
       transform: scale(1.08);
@@ -265,6 +321,7 @@
       .card-title { font-size: 1.1rem; }
       .card-btn { padding: 8px 16px; font-size: 0.9rem; }
       .balloon { width: 40px; height: 50px; }
+      .tab-btn { padding: 10px 20px; font-size: 1rem; }
     }
     @media (max-width: 360px) {
       .cards-grid { grid-template-columns: 1fr; }
@@ -280,70 +337,178 @@
   <div class="balloon"></div>
   <div class="balloon"></div>
 
-  <div class="container">
-    <h1>🌈 小朋友学英语 🌈</h1>
-    <p class="subtitle">✨ 点击卡片，听听怎么说 ✨</p>
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('daily', this)">🌸 日常口语</button>
+    <button class="tab-btn vehicles" onclick="switchTab('vehicles', this)">🚗 交通工具</button>
+  </div>
 
-    <div class="stars">
-      <span class="star">⭐</span>
-      <span class="star">🌟</span>
-      <span class="star">⭐</span>
-      <span class="star">🌟</span>
-      <span class="star">⭐</span>
+  <div class="container">
+
+    <!-- 日常口语 Page -->
+    <div id="daily" class="page active">
+      <h1>🌈 小朋友学英语 🌈</h1>
+      <p class="subtitle">✨ 点击卡片，听听怎么说 ✨</p>
+
+      <div class="stars">
+        <span class="star">⭐</span>
+        <span class="star">🌟</span>
+        <span class="star">⭐</span>
+        <span class="star">🌟</span>
+        <span class="star">⭐</span>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- 1. Good Morning Lucky -->
+        <div class="card" onclick="speak('Good Morning, Lucky!', this)">
+          <span class="card-emoji">🌅</span>
+          <div class="card-title">Good Morning, Lucky!</div>
+          <div class="card-translate">早安，小Lucky！</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Good Morning, Lucky!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- 2. How's the weather -->
+        <div class="card" onclick="speak('How is the weather today?', this)">
+          <span class="card-emoji">🌤️</span>
+          <div class="card-title">How's the Weather?</div>
+          <div class="card-translate">今天天气怎么样？</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('How is the weather today?', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- 3. What day is it -->
+        <div class="card" onclick="speak('What day is it today?', this)">
+          <span class="card-emoji">📅</span>
+          <div class="card-title">What Day Is It?</div>
+          <div class="card-translate">今天星期几？</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('What day is it today?', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- 4. How are you feeling -->
+        <div class="card" onclick="speak('How are you feeling today?', this)">
+          <span class="card-emoji">😊</span>
+          <div class="card-title">How Are You?</div>
+          <div class="card-translate">你今天感觉怎么样？</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('How are you feeling today?', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- 5. Thank you / You're welcome -->
+        <div class="card" onclick="speak('Thank you! You are welcome!', this)">
+          <span class="card-emoji">🙏</span>
+          <div class="card-title">Thank You!</div>
+          <div class="card-translate">谢谢 / 不客气</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Thank you! You are welcome!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+      </div>
     </div>
 
-    <div class="cards-grid">
+    <!-- 交通工具 Page -->
+    <div id="vehicles" class="page">
+      <h1>🚗 交通工具 🚗</h1>
+      <p class="subtitle">✨ 点击卡片，学学怎么说 ✨</p>
 
-      <!-- 1. Good Morning Lucky -->
-      <div class="card" onclick="speak('Good Morning, Lucky!', this)">
-        <span class="card-emoji">🌅</span>
-        <div class="card-title">Good Morning, Lucky!</div>
-        <div class="card-translate">早安，小Lucky！</div>
-        <button class="card-btn" onclick="event.stopPropagation(); speak('Good Morning, Lucky!', this.closest('.card'))">
-          <span class="speaker">🔊</span> 听一听
-        </button>
+      <div class="stars">
+        <span class="star">⭐</span>
+        <span class="star">🚂</span>
+        <span class="star">⭐</span>
+        <span class="star">🚒</span>
+        <span class="star">⭐</span>
       </div>
 
-      <!-- 2. How's the weather -->
-      <div class="card" onclick="speak('How is the weather today?', this)">
-        <span class="card-emoji">🌤️</span>
-        <div class="card-title">How's the Weather?</div>
-        <div class="card-translate">今天天气怎么样？</div>
-        <button class="card-btn" onclick="event.stopPropagation(); speak('How is the weather today?', this.closest('.card'))">
-          <span class="speaker">🔊</span> 听一听
-        </button>
-      </div>
+      <div class="cards-grid">
 
-      <!-- 3. What day is it -->
-      <div class="card" onclick="speak('What day is it today?', this)">
-        <span class="card-emoji">📅</span>
-        <div class="card-title">What Day Is It?</div>
-        <div class="card-translate">今天星期几？</div>
-        <button class="card-btn" onclick="event.stopPropagation(); speak('What day is it today?', this.closest('.card'))">
-          <span class="speaker">🔊</span> 听一听
-        </button>
-      </div>
+        <!-- Steam Train -->
+        <div class="card" onclick="speak('Steam Train!', this)">
+          <span class="card-emoji">🚂</span>
+          <div class="card-title">Steam Train</div>
+          <div class="card-translate">蒸汽火车</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Steam Train!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
 
-      <!-- 4. How are you feeling -->
-      <div class="card" onclick="speak('How are you feeling today?', this)">
-        <span class="card-emoji">😊</span>
-        <div class="card-title">How Are You?</div>
-        <div class="card-translate">你今天感觉怎么样？</div>
-        <button class="card-btn" onclick="event.stopPropagation(); speak('How are you feeling today?', this.closest('.card'))">
-          <span class="speaker">🔊</span> 听一听
-        </button>
-      </div>
+        <!-- High Speed Train -->
+        <div class="card" onclick="speak('High Speed Train!', this)">
+          <span class="card-emoji">🚄</span>
+          <div class="card-title">High Speed Train</div>
+          <div class="card-translate">高速火车</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('High Speed Train!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
 
-      <!-- 5. Thank you / You're welcome -->
-      <div class="card" onclick="speak('Thank you! You are welcome!', this)">
-        <span class="card-emoji">🙏</span>
-        <div class="card-title">Thank You!</div>
-        <div class="card-translate">谢谢 / 不客气</div>
-        <button class="card-btn" onclick="event.stopPropagation(); speak('Thank you! You are welcome!', this.closest('.card'))">
-          <span class="speaker">🔊</span> 听一听
-        </button>
-      </div>
+        <!-- Fire Truck -->
+        <div class="card" onclick="speak('Fire Truck!', this)">
+          <span class="card-emoji">🚒</span>
+          <div class="card-title">Fire Truck</div>
+          <div class="card-translate">消防车</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Fire Truck!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
 
+        <!-- Police Car -->
+        <div class="card" onclick="speak('Police Car!', this)">
+          <span class="card-emoji">🚓</span>
+          <div class="card-title">Police Car</div>
+          <div class="card-translate">警车</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Police Car!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Ambulance -->
+        <div class="card" onclick="speak('Ambulance!', this)">
+          <span class="card-emoji">🚑</span>
+          <div class="card-title">Ambulance!</div>
+          <div class="card-translate">救护车</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Ambulance!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Bus -->
+        <div class="card" onclick="speak('Bus!', this)">
+          <span class="card-emoji">🚌</span>
+          <div class="card-title">Bus!</div>
+          <div class="card-translate">公共汽车</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Bus!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Airplane -->
+        <div class="card" onclick="speak('Airplane!', this)">
+          <span class="card-emoji">✈️</span>
+          <div class="card-title">Airplane!</div>
+          <div class="card-translate">飞机</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Airplane!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Helicopter -->
+        <div class="card" onclick="speak('Helicopter!', this)">
+          <span class="card-emoji">🚁</span>
+          <div class="card-title">Helicopter!</div>
+          <div class="card-translate">直升机</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Helicopter!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+      </div>
     </div>
 
     <div class="footer">🦞 虾虾出品 · 用爱打造 ✨</div>
@@ -351,6 +516,16 @@
 
   <script>
     let currentUtterance = null;
+
+    function switchTab(tabId, btn) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // Show selected page
+      document.getElementById(tabId).classList.add('active');
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
 
     function speak(text, cardEl) {
       // 取消之前的朗读
