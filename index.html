@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌈 小朋友学英语 🌈</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Comic Sans MS', 'Microsoft YaHei', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ffecd2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 飘浮的气球背景 */
+    .balloon {
+      position: fixed;
+      width: 60px;
+      height: 75px;
+      border-radius: 50%;
+      animation: floatUp 8s ease-in-out infinite;
+      z-index: 0;
+      opacity: 0.6;
+    }
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 30px;
+      background: rgba(0,0,0,0.2);
+    }
+    .balloon:nth-child(1) { left: 5%; animation-delay: 0s; background: #ff6b6b; }
+    .balloon:nth-child(2) { left: 20%; animation-delay: 1.5s; background: #ffd93d; animation-duration: 10s; }
+    .balloon:nth-child(3) { left: 40%; animation-delay: 3s; background: #6bcb77; animation-duration: 7s; }
+    .balloon:nth-child(4) { left: 60%; animation-delay: 0.5s; background: #4d96ff; animation-duration: 9s; }
+    .balloon:nth-child(5) { left: 80%; animation-delay: 2s; background: #c77dff; animation-duration: 11s; }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-100px) rotate(20deg); opacity: 0; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #ff6b6b;
+      text-shadow: 3px 3px 0 #ffd93d, 5px 5px 0 rgba(0,0,0,0.1);
+      margin-bottom: 8px;
+      animation: bounceIn 1s ease;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #888;
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease;
+    }
+
+    @keyframes bounceIn {
+      0%   { transform: scale(0.3); opacity: 0; }
+      50%  { transform: scale(1.1); }
+      70%  { transform: scale(0.95); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 卡片 */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+      animation: cardIn 0.8s ease backwards;
+    }
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+    .card:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes cardIn {
+      from { transform: translateY(40px) scale(0.8); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+    }
+
+    .card:active {
+      transform: translateY(-4px) scale(1.02);
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: rotate(0deg); }
+      25%     { transform: rotate(-3deg); }
+      75%     { transform: rotate(3deg); }
+    }
+
+    /* 卡片装饰角 */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      opacity: 0.15;
+    }
+    .card:nth-child(1)::before { background: #ff6b6b; }
+    .card:nth-child(2)::before { background: #4d96ff; }
+    .card:nth-child(3)::before { background: #ffd93d; }
+    .card:nth-child(4)::before { background: #6bcb77; }
+    .card:nth-child(5)::before { background: #c77dff; }
+
+    .card-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      display: block;
+      animation: wiggle 2s ease-in-out infinite;
+      animation-play-state: paused;
+    }
+    .card:hover .card-emoji {
+      animation-play-state: running;
+    }
+
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-8deg) scale(1.1); }
+      50%     { transform: rotate(8deg) scale(1.1); }
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .card-translate {
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 14px;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+      transition: all 0.2s;
+    }
+    .card:nth-child(2) .card-btn { background: linear-gradient(135deg, #4d96ff, #6bcb77); box-shadow: 0 4px 12px rgba(77,150,255,0.4); }
+    .card:nth-child(3) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff6b6b); box-shadow: 0 4px 12px rgba(255,217,61,0.4); color: #333; }
+    .card:nth-child(4) .card-btn { background: linear-gradient(135deg, #6bcb77, #4d96ff); box-shadow: 0 4px 12px rgba(107,203,119,0.4); }
+    .card:nth-child(5) .card-btn { background: linear-gradient(135deg, #c77dff, #ff6b6b); box-shadow: 0 4px 12px rgba(199,125,255,0.4); }
+
+    .card-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+    .card-btn:active {
+      transform: scale(0.95);
+    }
+
+    .card-btn .speaker {
+      font-size: 1.2rem;
+    }
+
+    /* 点击高亮波纹 */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      transform: scale(0);
+      animation: rippleEffect 0.6s ease-out;
+      pointer-events: none;
+    }
+    @keyframes rippleEffect {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* 播放中动画 */
+    .playing {
+      animation: playingPulse 0.5s ease infinite alternate;
+    }
+    @keyframes playingPulse {
+      from { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+      to   { box-shadow: 0 8px 40px rgba(255,107,107,0.5); }
+    }
+
+    /* 星星装饰 */
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .star {
+      font-size: 1.8rem;
+      animation: starTwinkle 1.5s ease-in-out infinite;
+    }
+    .star:nth-child(1) { animation-delay: 0s; }
+    .star:nth-child(2) { animation-delay: 0.2s; }
+    .star:nth-child(3) { animation-delay: 0.4s; }
+    .star:nth-child(4) { animation-delay: 0.6s; }
+    .star:nth-child(5) { animation-delay: 0.8s; }
+
+    @keyframes starTwinkle {
+      0%,100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50%     { transform: scale(1.3) rotate(15deg); opacity: 0.7; }
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: rgba(255,107,107,0.6);
+      animation: fadeIn 3s ease;
+    }
+
+    /* 响应式 */
+    @media (max-width: 480px) {
+      h1 { font-size: 1.6rem; }
+      .cards-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .card { padding: 16px 10px; border-radius: 18px; }
+      .card-emoji { font-size: 2.5rem; }
+      .card-title { font-size: 1.1rem; }
+      .card-btn { padding: 8px 16px; font-size: 0.9rem; }
+      .balloon { width: 40px; height: 50px; }
+    }
+    @media (max-width: 360px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 飘浮气球 -->
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+  <div class="balloon"></div>
+
+  <div class="container">
+    <h1>🌈 小朋友学英语 🌈</h1>
+    <p class="subtitle">✨ 点击卡片，听听怎么说 ✨</p>
+
+    <div class="stars">
+      <span class="star">⭐</span>
+      <span class="star">🌟</span>
+      <span class="star">⭐</span>
+      <span class="star">🌟</span>
+      <span class="star">⭐</span>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- 1. Good Morning Lucky -->
+      <div class="card" onclick="speak('Good Morning, Lucky!', this)">
+        <span class="card-emoji">🌅</span>
+        <div class="card-title">Good Morning, Lucky!</div>
+        <div class="card-translate">早安，小Lucky！</div>
+        <button class="card-btn" onclick="event.stopPropagation(); speak('Good Morning, Lucky!', this.closest('.card'))">
+          <span class="speaker">🔊</span> 听一听
+        </button>
+      </div>
+
+      <!-- 2. How's the weather -->
+      <div class="card" onclick="speak('How is the weather today?', this)">
+        <span class="card-emoji">🌤️</span>
+        <div class="card-title">How's the Weather?</div>
+        <div class="card-translate">今天天气怎么样？</div>
+        <button class="card-btn" onclick="event.stopPropagation(); speak('How is the weather today?', this.closest('.card'))">
+          <span class="speaker">🔊</span> 听一听
+        </button>
+      </div>
+
+      <!-- 3. What day is it -->
+      <div class="card" onclick="speak('What day is it today?', this)">
+        <span class="card-emoji">📅</span>
+        <div class="card-title">What Day Is It?</div>
+        <div class="card-translate">今天星期几？</div>
+        <button class="card-btn" onclick="event.stopPropagation(); speak('What day is it today?', this.closest('.card'))">
+          <span class="speaker">🔊</span> 听一听
+        </button>
+      </div>
+
+      <!-- 4. How are you feeling -->
+      <div class="card" onclick="speak('How are you feeling today?', this)">
+        <span class="card-emoji">😊</span>
+        <div class="card-title">How Are You?</div>
+        <div class="card-translate">你今天感觉怎么样？</div>
+        <button class="card-btn" onclick="event.stopPropagation(); speak('How are you feeling today?', this.closest('.card'))">
+          <span class="speaker">🔊</span> 听一听
+        </button>
+      </div>
+
+      <!-- 5. Thank you / You're welcome -->
+      <div class="card" onclick="speak('Thank you! You are welcome!', this)">
+        <span class="card-emoji">🙏</span>
+        <div class="card-title">Thank You!</div>
+        <div class="card-translate">谢谢 / 不客气</div>
+        <button class="card-btn" onclick="event.stopPropagation(); speak('Thank you! You are welcome!', this.closest('.card'))">
+          <span class="speaker">🔊</span> 听一听
+        </button>
+      </div>
+
+    </div>
+
+    <div class="footer">🦞 虾虾出品 · 用爱打造 ✨</div>
+  </div>
+
+  <script>
+    let currentUtterance = null;
+
+    function speak(text, cardEl) {
+      // 取消之前的朗读
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+
+      // 创建语音对象
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.85;
+      utterance.pitch = 1.3;
+
+      // 尝试选一个儿童友好的声音
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v =>
+        v.lang.includes('en') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Karen'))
+      ) || voices.find(v => v.lang.includes('en')) || voices[0];
+
+      if (preferred) {
+        utterance.voice = preferred;
+      }
+
+      // 添加波纹效果
+      if (cardEl) {
+        cardEl.classList.add('playing');
+        createRipple(cardEl);
+      }
+
+      utterance.onend = () => {
+        if (cardEl) cardEl.classList.remove('playing');
+      };
+      utterance.onerror = () => {
+        if (cardEl) cardEl.classList.remove('playing');
+      };
+
+      currentUtterance = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function createRipple(element) {
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+      const size = Math.max(element.offsetWidth, element.offsetHeight);
+      ripple.style.width = ripple.style.height = size * 0.6 + 'px';
+      ripple.style.left = '50%';
+      ripple.style.top = '50%';
+      ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+      element.appendChild(ripple);
+      requestAnimationFrame(() => ripple.classList.add('rippleEffect'));
+      setTimeout(() => ripple.remove(), 700);
+    }
+
+    // 预加载声音列表
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  </script>
+</body>
+</html>
