@@ -53,6 +53,16 @@
       color: white;
       box-shadow: 0 6px 20px rgba(77,150,255,0.4);
     }
+    .tab-btn.school {
+      border-color: #6bcb77;
+      color: #6bcb77;
+      box-shadow: 0 4px 12px rgba(107,203,119,0.2);
+    }
+    .tab-btn.school:hover, .tab-btn.school.active {
+      background: #6bcb77;
+      color: white;
+      box-shadow: 0 6px 20px rgba(107,203,119,0.4);
+    }
 
     /* Page sections */
     .page { display: none; padding: 20px; }
@@ -249,6 +259,22 @@
     #vehicles .card:nth-child(7) .card-btn { background: linear-gradient(135deg, #6bcb77, #4d96ff); }
     #vehicles .card:nth-child(8) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff9f43); color: #333; }
 
+    /* School page button colors */
+    #school .card:nth-child(1) .card-btn { background: linear-gradient(135deg, #ff6b6b, #c77dff); }
+    #school .card:nth-child(2) .card-btn { background: linear-gradient(135deg, #6bcb77, #4d96ff); }
+    #school .card:nth-child(3) .card-btn { background: linear-gradient(135deg, #ffd93d, #ff9f43); color: #333; }
+    #school .card:nth-child(4) .card-btn { background: linear-gradient(135deg, #4d96ff, #6bcb77); }
+    #school .card:nth-child(5) .card-btn { background: linear-gradient(135deg, #c77dff, #ff6b6b); }
+    #school .card:nth-child(6) .card-btn { background: linear-gradient(135deg, #ff9f43, #ff6b6b); }
+
+    /* School page card decorations */
+    #school .card::before:nth-child(1) { background: #ff6b6b; }
+    #school .card::before:nth-child(2) { background: #6bcb77; }
+    #school .card::before:nth-child(3) { background: #ffd93d; }
+    #school .card::before:nth-child(4) { background: #4d96ff; }
+    #school .card::before:nth-child(5) { background: #c77dff; }
+    #school .card::before:nth-child(6) { background: #ff9f43; }
+
     .card-btn:hover {
       transform: scale(1.08);
       box-shadow: 0 6px 18px rgba(0,0,0,0.2);
@@ -341,6 +367,7 @@
   <div class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('daily', this)">🌸 日常口语</button>
     <button class="tab-btn vehicles" onclick="switchTab('vehicles', this)">🚗 交通工具</button>
+    <button class="tab-btn school" onclick="switchTab('school', this)">🏫 学校</button>
   </div>
 
   <div class="container">
@@ -504,6 +531,84 @@
           <div class="card-title">Helicopter!</div>
           <div class="card-translate">直升机</div>
           <button class="card-btn" onclick="event.stopPropagation(); speak('Helicopter!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 学校 Page -->
+    <div id="school" class="page">
+      <h1>🏫 学校课堂 🏫</h1>
+      <p class="subtitle">✨ 点击卡片，学学学校词汇 ✨</p>
+
+      <div class="stars">
+        <span class="star">📚</span>
+        <span class="star">✏️</span>
+        <span class="star">📚</span>
+        <span class="star">✏️</span>
+        <span class="star">📚</span>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- Teacher -->
+        <div class="card" onclick="speak('Teacher!', this)">
+          <span class="card-emoji">👩‍🏫</span>
+          <div class="card-title">Teacher!</div>
+          <div class="card-translate">老师</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Teacher!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Classroom -->
+        <div class="card" onclick="speak('Classroom!', this)">
+          <span class="card-emoji">🏫</span>
+          <div class="card-title">Classroom!</div>
+          <div class="card-translate">教室</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Classroom!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Chair -->
+        <div class="card" onclick="speak('Chair!', this)">
+          <span class="card-emoji">🪑</span>
+          <div class="card-title">Chair!</div>
+          <div class="card-translate">椅子</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Chair!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Bookcase -->
+        <div class="card" onclick="speak('Bookcase!', this)">
+          <span class="card-emoji">📖</span>
+          <div class="card-title">Bookcase!</div>
+          <div class="card-translate">书架</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Bookcase!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Pencil -->
+        <div class="card" onclick="speak('Pencil!', this)">
+          <span class="card-emoji">✏️</span>
+          <div class="card-title">Pencil!</div>
+          <div class="card-translate">铅笔</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Pencil!', this.closest('.card'))">
+            <span class="speaker">🔊</span> 听一听
+          </button>
+        </div>
+
+        <!-- Bag -->
+        <div class="card" onclick="speak('Bag!', this)">
+          <span class="card-emoji">🎒</span>
+          <div class="card-title">Bag!</div>
+          <div class="card-translate">书包</div>
+          <button class="card-btn" onclick="event.stopPropagation(); speak('Bag!', this.closest('.card'))">
             <span class="speaker">🔊</span> 听一听
           </button>
         </div>
