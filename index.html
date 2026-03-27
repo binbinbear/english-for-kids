@@ -1021,45 +1021,145 @@
   </div>
 
   <script>
-    let currentUtterance = null;
+    // ══════════════════════════════════════════════
+    // ElevenLabs TTS 配置
+    // ══════════════════════════════════════════════
+    const ELEVENLABS_API_KEY = 'sk_74a406e9969393eadbbc556310a4936d19415629d124aa94';
+    const ELEVENLABS_VOICE_ID = 'cgSgspJ2msm6';
+    const ELEVENLABS_BASE_URL = 'https://api.elevenlabs.io/v1/text-to-speech';
 
+    // 复用 Audio 实例，避免多次创建
+    let currentAudio = null;
+
+    // Web Speech API 语音初始化（fallback 用）
+    let preferredVoice = null;
+
+    function initVoices() {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length === 0) return;
+      preferredVoice =
+        voices.find(v =>
+          v.lang.startsWith('en') &&
+          (v.name.includes('Google') || v.name.includes('Microsoft')) &&
+          (v.name.includes('Female') || v.name.includes('女'))
+        ) ||
+        voices.find(v =>
+          v.lang.startsWith('en') &&
+          (v.name.includes('Google') || v.name.includes('Microsoft'))
+        ) ||
+        voices.find(v =>
+          (v.lang === 'en-US' || v.lang === 'en-GB' || v.lang.startsWith('en-')) &&
+          (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Karen') || v.name.includes('Zira'))
+        ) ||
+        voices.find(v => v.lang === 'en-US') ||
+        voices.find(v => v.lang === 'en-GB') ||
+        voices.find(v => v.lang.startsWith('en')) ||
+        voices[0];
+      console.log('🎤 Web Speech 选用语音:', preferredVoice?.name, preferredVoice?.lang);
+    }
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => initVoices();
+      initVoices();
+    }
+
+    // ══════════════════════════════════════════════
+    // 标签切换
+    // ══════════════════════════════════════════════
     function switchTab(tabId, btn) {
-      // Hide all pages
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      // Show selected page
       document.getElementById(tabId).classList.add('active');
-      // Update tab buttons
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     }
 
+    // ══════════════════════════════════════════════
+    // 朗读核心函数：ElevenLabs TTS + Web Speech Fallback
+    // ══════════════════════════════════════════════
     function speak(text, cardEl) {
-      // 取消之前的朗读
+      // 停止之前的任何音频
+      stopAudio();
+
+      // 取消 Web Speech API 之前的朗读
       if (window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
 
-      // 创建语音对象
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.85;
-      utterance.pitch = 1.3;
-
-      // 尝试选一个儿童友好的声音
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find(v =>
-        v.lang.includes('en') && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Karen'))
-      ) || voices.find(v => v.lang.includes('en')) || voices[0];
-
-      if (preferred) {
-        utterance.voice = preferred;
-      }
-
-      // 添加波纹效果
+      // 添加波纹和 playing 动画
       if (cardEl) {
         cardEl.classList.add('playing');
         createRipple(cardEl);
       }
+
+      // 先尝试 ElevenLabs TTS
+      playElevenLabs(text, cardEl);
+    }
+
+    function playElevenLabs(text, cardEl) {
+      fetch(`${ELEVENLABS_BASE_URL}/${ELEVENLABS_VOICE_ID}`, {
+        method: 'POST',
+        headers: {
+          'xi-api-key': ELEVENLABS_API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg'
+        },
+        body: JSON.stringify({
+          text: text,
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.75
+          }
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`ElevenLabs API error: ${response.status}`);
+          }
+          return response.arrayBuffer();
+        })
+        .then(arrayBuffer => {
+          const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+          const url = URL.createObjectURL(blob);
+          currentAudio = new Audio(url);
+          currentAudio.volume = 1.0;
+
+          currentAudio.onended = () => {
+            URL.revokeObjectURL(url);
+            currentAudio = null;
+            if (cardEl) cardEl.classList.remove('playing');
+          };
+          currentAudio.onerror = () => {
+            URL.revokeObjectURL(url);
+            currentAudio = null;
+            if (cardEl) cardEl.classList.remove('playing');
+            // 尝试 Web Speech fallback
+            playWebSpeech(text, cardEl);
+          };
+          currentAudio.play().catch(err => {
+            console.warn('Audio play failed:', err);
+            playWebSpeech(text, cardEl);
+          });
+        })
+        .catch(err => {
+          console.warn('ElevenLabs TTS failed, falling back to Web Speech API:', err);
+          playWebSpeech(text, cardEl);
+        });
+    }
+
+    function playWebSpeech(text, cardEl) {
+      if (!window.speechSynthesis) {
+        if (cardEl) cardEl.classList.remove('playing');
+        return;
+      }
+
+      if (!preferredVoice) initVoices();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      utterance.pitch = 1.15;
+      utterance.volume = 1.0;
+      if (preferredVoice) utterance.voice = preferredVoice;
 
       utterance.onend = () => {
         if (cardEl) cardEl.classList.remove('playing');
@@ -1068,11 +1168,21 @@
         if (cardEl) cardEl.classList.remove('playing');
       };
 
-      currentUtterance = utterance;
       window.speechSynthesis.speak(utterance);
     }
 
+    function stopAudio() {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+    }
+
     function createRipple(element) {
+      const existing = element.querySelector('.ripple');
+      if (existing) existing.remove();
+
       const ripple = document.createElement('span');
       ripple.classList.add('ripple');
       const size = Math.max(element.offsetWidth, element.offsetHeight);
@@ -1083,14 +1193,6 @@
       element.appendChild(ripple);
       requestAnimationFrame(() => ripple.classList.add('rippleEffect'));
       setTimeout(() => ripple.remove(), 700);
-    }
-
-    // 预加载声音列表
-    if (window.speechSynthesis) {
-      window.speechSynthesis.getVoices();
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
     }
   </script>
 </body>
