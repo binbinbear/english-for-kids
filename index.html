@@ -1091,10 +1091,38 @@
         createRipple(cardEl);
       }
 
-      // 先尝试 ElevenLabs TTS
-      playElevenLabs(text, cardEl);
+      // 先尝试本地预生成的 MP3
+      playLocalAudio(text, cardEl);
     }
 
+    // 将文本转换为音频文件名
+    function textToAudioFile(text) {
+      return './audio/' + text.replace(/ /g, '_').replace(/[!?]/g, '') + '.mp3';
+    }
+
+    // 播放本地预生成的 MP3 文件
+    function playLocalAudio(text, cardEl) {
+      const audioFile = textToAudioFile(text);
+      currentAudio = new Audio(audioFile);
+      currentAudio.volume = 1.0;
+
+      currentAudio.onended = () => {
+        currentAudio = null;
+        if (cardEl) cardEl.classList.remove('playing');
+      };
+      currentAudio.onerror = () => {
+        currentAudio = null;
+        if (cardEl) cardEl.classList.remove('playing');
+        // 本地文件不存在或播放失败，使用 Web Speech fallback
+        playWebSpeech(text, cardEl);
+      };
+      currentAudio.play().catch(err => {
+        console.warn('Local audio play failed:', err);
+        playWebSpeech(text, cardEl);
+      });
+    }
+
+    // ElevenLabs TTS（已弃用，保留作为参考）
     function playElevenLabs(text, cardEl) {
       fetch(`${ELEVENLABS_BASE_URL}/${ELEVENLABS_VOICE_ID}`, {
         method: 'POST',
